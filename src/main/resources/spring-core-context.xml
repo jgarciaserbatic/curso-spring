@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- DEFINICIÓN DE SCOPE -->
+	<bean id="singletonBean" scope="singleton"
+		class="es.serbatic.scope.SingletonObject"></bean>
+	<bean id="prototypeBean" scope="prototype"
+		class="es.serbatic.scope.PrototypeObject"></bean>
+
+	<!-- Este servicio lo hacemos prototype para que me cree un servicio nuevo 
+		cada vez que lo necesite, si no, no podríamos probar el scope -->
+	<!-- DEFINICIÓN DE SERVICIO -->
+	<bean id="scopeTestService" scope="prototype"
+		class="es.serbatic.services.ScopeTestService">
+		<property name="singletonObject" ref="singletonBean"></property>
+		<property name="prototypeObject" ref="prototypeBean"></property>
+	</bean>
+
+	<!-- EJEMPLO DE PARÁMETROS AL CONSTRUCTOR -->
+	<bean id="constructorArgsTestService"
+		class="es.serbatic.services.ConstructorArgsTestService">
+		<constructor-arg name="nombre"
+			value="Constructor Args Test"></constructor-arg>
+		<constructor-arg name="scope" ref="prototypeBean"></constructor-arg>
+	</bean>
+
+	<bean id="constructorArgsTestServiceByOrder"
+		class="es.serbatic.services.ConstructorArgsTestService">
+		<constructor-arg index="0"
+			value="Constructor Args By Index Test"></constructor-arg>
+		<constructor-arg index="1" ref="singletonBean"></constructor-arg>
+	</bean>
+
+	<bean id="constructorArgsTestServiceByType"
+		class="es.serbatic.services.ConstructorArgsTestService">
+		<constructor-arg type="java.lang.String"
+			value="Constructor Args By Type Test"></constructor-arg>
+		<constructor-arg type="es.serbatic.scope.ScopeObject"
+			ref="prototypeBean"></constructor-arg>
+	</bean>
+
+	<!-- Método init y destroy -->
+	<bean id="initMethodTestService"
+		class="es.serbatic.services.InitMethodTestService" init-method="init"
+		destroy-method="destroy" />
+
+	<!-- herencia -->
+	<bean id="abstractClass"
+		class="es.serbatic.hierarchy.ClaseAbstracta" abstract="true">
+		<property name="tipo" value="Abstracto"></property>
+		<property name="mensaje" value="Mensaje abstracto"></property>
+	</bean>
+
+	<bean id="implementationClass"
+		class="es.serbatic.hierarchy.impl.ClassImplementation"
+		parent="abstractClass">
+		<property name="tipo" value="Concreto"></property>
+		<property name="mensajeConcreto" value="Mensaje concreto"></property>
+	</bean>
+	<bean id="implementationOverrideClass"
+		class="es.serbatic.hierarchy.impl.ClassImplementation"
+		parent="abstractClass">
+		<property name="tipo" value="Concreto"></property>
+		<property name="mensaje" value="Mensaje concreto sobrescrito"></property>
+		<property name="mensajeConcreto" value="Mensaje concreto"></property>
+	</bean>
+
+	<bean id="implementationWithoutHierarchyClass"
+		class="es.serbatic.hierarchy.impl.ClassWithoutImplementation"
+		parent="abstractClass">
+		<property name="mensajeConcreto" value="Mensaje concreto"></property>
+	</bean>
+
+	<!-- INNER BEAN -->
+	<bean id="outerBean" class="es.serbatic.pojo.OuterBean">
+		<property name="innerBean">
+			<bean id="innerBean" class="es.serbatic.pojo.InnerBean">
+				<property name="innerProperty"
+					value="Propiedad del bean interno"></property>
+			</bean>
+		</property>
+	</bean>
+	<!-- COLLECTIONS -->
+	<bean id="listCollection"
+		class="es.serbatic.collections.ListCollection">
+		<property name="lista">
+			<list>
+				<value>Valor lista 1</value>
+				<value>Valor lista 2</value>
+				<value>Valor lista 3</value>
+				<value>Valor lista 4</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="setCollection"
+		class="es.serbatic.collections.SetCollection">
+		<property name="set">
+			<set>
+				<value>Valor lista 1</value>
+				<value>Valor lista 1</value>
+				<value>Valor lista 2</value>
+				<value>Valor lista 3</value>
+				<value>Valor lista 4</value>
+			</set>
+		</property>
+	</bean>
+	
+	<!-- Definimos los objetos que entrarán en el mapa -->
+	<bean id="key1" class="es.serbatic.collections.Key">
+		<property name="keyNumber" value="1"></property>
+		<property name="key" value="Uno"></property>
+	</bean>
+	<bean id="key2" class="es.serbatic.collections.Key">
+		<property name="keyNumber" value="2"></property>
+		<property name="key" value="Dos"></property>
+	</bean>
+	<bean id="key3" class="es.serbatic.collections.Key">
+		<property name="keyNumber" value="3"></property>
+		<property name="key" value="Tres"></property>
+	</bean>
+	<bean id="key4" class="es.serbatic.collections.Key">
+		<property name="keyNumber" value="4"></property>
+		<property name="key" value="Cuatro"></property>
+	</bean>
+	<bean id="value1" class="es.serbatic.collections.Value">
+		<property name="valueCode" value="1"></property>
+		<property name="valueDescription" value="Descripcion valor de uno"></property>
+	</bean>
+	<bean id="value2" class="es.serbatic.collections.Value">
+		<property name="valueCode" value="2"></property>
+		<property name="valueDescription" value="Descripcion valor de dos"></property>
+	</bean>
+	<bean id="value3" class="es.serbatic.collections.Value">
+		<property name="valueCode" value="3"></property>
+		<property name="valueDescription" value="Descripcion valor de tres"></property>
+	</bean>
+	<bean id="value4" class="es.serbatic.collections.Value">
+		<property name="valueCode" value="4"></property>
+		<property name="valueDescription" value="Descripcion valor de cuatro"></property>
+	</bean>
+	<bean id="mapCollection"
+		class="es.serbatic.collections.MapCollection">
+		<property name="mapa">
+			<map>
+				<entry key-ref="key1" value-ref="value1" />
+				<entry key-ref="key2" value-ref="value2" />
+				<entry key-ref="key3" value-ref="value3" />
+				<entry key-ref="key4" value-ref="value4" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="propsCollection"
+		class="es.serbatic.collections.PropsCollection">
+		<property name="propiedades">
+			<props>
+				<prop key="propiedad1" >Desc Propiedad Uno</prop>
+				<prop key="propiedad2" >Desc Propiedad Dos</prop>
+				<prop key="propiedad3" >Desc Propiedad Tres</prop>
+				<prop key="propiedad4" >Desc Propiedad Cuatro</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="autowireByName" class="es.serbatic.autowire.ComplexObject" autowire="byName" />
+	
+	<bean id="autowireByType" class="es.serbatic.autowire.ComplexObjectConcreteType" autowire="byType"/>
+	
+	<bean id="autowireConstructor" class="es.serbatic.autowire.ComplexObject" autowire="constructor" />
+	
+	<bean id="autowireDefault" class="es.serbatic.autowire.ComplexObject" autowire="default" />
+	
+</beans>
