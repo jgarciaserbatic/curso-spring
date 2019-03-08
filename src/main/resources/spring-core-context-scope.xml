@@ -18,56 +18,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="singletonObject" ref="singletonBean"></property>
 		<property name="prototypeObject" ref="prototypeBean"></property>
 	</bean>
-
-	<!-- EJEMPLO DE PARÁMETROS AL CONSTRUCTOR -->
-	<bean id="constructorArgsTestService"
-		class="es.serbatic.services.ConstructorArgsTestService">
-		<constructor-arg name="nombre"
-			value="Constructor Args Test"></constructor-arg>
-		<constructor-arg name="scope" ref="prototypeBean"></constructor-arg>
-	</bean>
-
-	<bean id="constructorArgsTestServiceByOrder"
-		class="es.serbatic.services.ConstructorArgsTestService">
-		<constructor-arg index="0"
-			value="Constructor Args By Index Test"></constructor-arg>
-		<constructor-arg index="1" ref="singletonBean"></constructor-arg>
-	</bean>
-
-	<bean id="constructorArgsTestServiceByType"
-		class="es.serbatic.services.ConstructorArgsTestService">
-		<constructor-arg type="java.lang.String"
-			value="Constructor Args By Type Test"></constructor-arg>
-		<constructor-arg type="es.serbatic.scope.ScopeObject"
-			ref="prototypeBean"></constructor-arg>
-	</bean>
 	
-	<!-- Método init y destroy -->
-	<bean id="initMethodTestService"
-		class="es.serbatic.services.InitMethodTestService" init-method="init"
-		destroy-method="destroy" />
-
-	<!-- herencia -->
-	<bean id="abstractClass"
-		class="es.serbatic.hierarchy.ClaseAbstracta" abstract="true">
-		<property name="tipo" value="Abstracto"></property>
-		<property name="mensaje" value="Mensaje abstracto"></property>
-	</bean>
-	
-	<bean id="implementationClass"
-		class="es.serbatic.hierarchy.impl.ClassImplementation" parent="abstractClass">
-		<property name="tipo" value="Concreto"></property>
-		<property name="mensajeConcreto" value="Mensaje concreto"></property>
-	</bean>
-	<bean id="implementationOverrideClass"
-		class="es.serbatic.hierarchy.impl.ClassImplementation" parent="abstractClass">
-		<property name="tipo" value="Concreto"></property>
-		<property name="mensaje" value="Mensaje concreto sobrescrito"></property>
-		<property name="mensajeConcreto" value="Mensaje concreto"></property>
-	</bean>
-	
-	<bean id="implementationWithoutHierarchyClass"
-		class="es.serbatic.hierarchy.impl.ClassWithoutImplementation" parent="abstractClass">
-		<property name="mensajeConcreto" value="Mensaje concreto"></property>
-	</bean>
 </beans>
